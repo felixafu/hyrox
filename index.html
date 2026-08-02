@@ -247,22 +247,85 @@ const RACE  = new Date(2026, 11, 2);  // Wed 2 Dec 2026
 const KEY   = 'hyrox-london-2026';
 const DAYS  = ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'];
 
-/* ---------- shared strength templates ---------- */
-const PUSH = [
-  ['Incline DB press','4 x 8-10'],
-  ['Overhead press','3 x 6-8'],
-  ['Weighted dip','3 x 8-10'],
-  ['Lateral raise','3 x 15'],
-  ['SkiErg','6 x 500m / 60s']
-];
-const PULL = [
-  ['Weighted pull-up','4 x 6'],
-  ['Chest-supported row','4 x 10'],
-  ['Straight-arm pulldown','3 x 12'],
-  ['Face pull','3 x 15'],
-  ['Farmers carry','4 x 50m @ 2x24kg'],
-  ['Hanging leg raise','3 x 12']
-];
+/* ---------- strength: progresses in 4 blocks ----------
+   1-4 foundation | 5-9 build | 10-14 race-specific | 15-17 sharpen
+------------------------------------------------------- */
+const BLOCK = wk => wk<=4 ? 'Foundation' : wk<=9 ? 'Build' : wk<=14 ? 'Race-specific' : 'Sharpen';
+
+const push = (wk, dl) => {
+  if (dl) return [
+    ['Incline DB press','2 x 10, easy'],
+    ['Overhead press','2 x 8, easy'],
+    ['Lateral raise','2 x 15'],
+    ['SkiErg','10min easy, technique only']
+  ];
+  if (wk <= 4) return [
+    ['Flat DB press','3 x 12'],
+    ['Overhead press','3 x 10'],
+    ['Dip','3 x 8-10, bodyweight'],
+    ['Lateral raise','3 x 15'],
+    ['SkiErg','4 x 500m easy, technique']
+  ];
+  if (wk <= 9) return [
+    ['Incline DB press','4 x 8-10'],
+    ['Overhead press','3 x 6-8'],
+    ['Weighted dip','3 x 8-10'],
+    ['Lateral raise','3 x 15'],
+    ['SkiErg','6 x 500m / 60s rest']
+  ];
+  if (wk <= 14) return [
+    ['Push press','4 x 5'],
+    ['Incline DB press','3 x 10'],
+    ['Wall balls','3 x 20 unbroken'],
+    ['Lateral raise','3 x 15'],
+    ['SkiErg','5 x 500m @ race pace / 45s']
+  ];
+  return [
+    ['Push press','3 x 5'],
+    ['Incline DB press','3 x 8'],
+    ['Wall balls','2 x 15'],
+    ['SkiErg','4 x 500m @ race pace']
+  ];
+};
+
+const pull = (wk, dl) => {
+  if (dl) return [
+    ['Pull-up','2 easy sets'],
+    ['Chest-supported row','2 x 10, easy'],
+    ['Face pull','2 x 15'],
+    ['Farmers carry','2 x 40m, light']
+  ];
+  if (wk <= 4) return [
+    ['Pull-up','3 sets, stop 2 shy of max'],
+    ['Chest-supported row','3 x 12'],
+    ['Straight-arm pulldown','3 x 12'],
+    ['Face pull','3 x 15'],
+    ['Farmers carry','3 x 40m, moderate'],
+    ['Plank','3 x 45s']
+  ];
+  if (wk <= 9) return [
+    ['Weighted pull-up','4 x 6'],
+    ['Chest-supported row','4 x 10'],
+    ['Straight-arm pulldown','3 x 12'],
+    ['Face pull','3 x 15'],
+    ['Farmers carry','4 x 50m, heavy'],
+    ['Hanging leg raise','3 x 12']
+  ];
+  if (wk <= 14) return [
+    ['Weighted pull-up','4 x 5'],
+    ['Row erg','4 x 500m / 60s rest'],
+    ['Chest-supported row','3 x 10'],
+    ['Farmers carry','4 x 60m @ race weight'],
+    ['Hanging leg raise','3 x 12']
+  ];
+  return [
+    ['Pull-up','3 x 6'],
+    ['Row erg','3 x 500m @ race pace'],
+    ['Farmers carry','2 x 50m @ race weight'],
+    ['Hanging leg raise','2 x 12']
+  ];
+};
+
 const lower = (wk, dl) => {
   if (dl) return [
     ['Back squat','3 x 5 @ RPE 6'],
@@ -270,16 +333,36 @@ const lower = (wk, dl) => {
     ['Romanian deadlift','2 x 8'],
     ['Standing calf raise','2 x 15']
   ];
-  const sq = wk <= 4 ? '4 x 6 @ RPE 7' : '4 x 5 @ RPE 8';
-  const rows = [
-    ['Back squat', sq],
+  if (wk <= 4) {
+    const rows = [
+      ['Back squat','4 x 6 @ RPE 7'],
+      ['Bulgarian split squat','3 x 10 each leg'],
+      ['Romanian deadlift','3 x 8']
+    ];
+    if (wk >= 3) rows.push(['Sled push','6 x 25m, moderate']);
+    rows.push(['Standing calf raise','3 x 15']);
+    return rows;
+  }
+  if (wk <= 9) return [
+    ['Back squat','4 x 5 @ RPE 8'],
     ['Bulgarian split squat','3 x 10 each leg'],
-    ['Romanian deadlift','3 x 8']
+    ['Romanian deadlift','3 x 8'],
+    ['Heavy sled push','8 x 25m'],
+    ['Standing calf raise','3 x 15']
   ];
-  if (wk >= 5)       rows.push(['Heavy sled push','8 x 25m']);
-  else if (wk >= 3)  rows.push(['Sled push','6 x 25m, moderate']);
-  rows.push(['Standing calf raise','3 x 15']);
-  return rows;
+  if (wk <= 14) return [
+    ['Back squat','5 x 3, heavy'],
+    ['Sandbag walking lunge','3 x 20m'],
+    ['Single-leg RDL','2 x 8 each leg'],
+    ['Sled push + pull','6 x 12.5m each, race weight'],
+    ['Standing calf raise','3 x 15']
+  ];
+  return [
+    ['Back squat','3 x 3, crisp and fast'],
+    ['Sandbag walking lunge','2 x 20m'],
+    ['Sled push','4 x 12.5m, fast'],
+    ['Standing calf raise','2 x 15']
+  ];
 };
 
 /* ---------- per-week programming ----------
@@ -292,17 +375,17 @@ const W = [
   sun:{t:'Base run + station skill',s:'50min Z2 + 30min technique',b:['50min easy Z2 run','Then unloaded technique: SkiErg, Row, Wall Ball','Film yourself on wall balls and sled push'],c:'Technique bought cheaply in August saves you minutes in December.'}},
 
  {n:2,ph:'Rebuild',km:20,
-  wed:{t:'Easy Z2 + strides',s:'40min Z2, then 6 x 20s strides',b:['Same as last week, five minutes longer.']},
+  wed:{t:'Easy Z2 + hill strides',s:'40min Z2, then 6 x 20s uphill',b:['Same run as last week, five minutes longer, strides now on a gentle hill.','Uphill strides build push-off strength with less impact. Kind to a healing leg.']},
   sat:{t:'Easy Z2 run',s:'35min'},
-  sun:{t:'Base run + station skill',s:'55min Z2 + 30min technique',b:['55min easy Z2','Row and Ski technique: focus on drive sequence, not pace','Practise wall ball depth and target consistency']}},
+  sun:{t:'Base run + station skill',s:'55min Z2 + 30min technique',b:['55min easy Z2','Burpee broad jump technique: low hop, roll straight through, no pause at the top','Sandbag lunge form: 2 x 20m, chest tall, knee kisses the floor','Finish with 20 easy wall balls']}},
 
  {n:3,ph:'Rebuild',km:24,
   wed:{t:'5K TIME TRIAL',s:'Hard, measured effort',b:['15min easy warm-up plus 4 x 20s strides','5km all-out on a flat route or track','10min easy cool-down','Any hint of the old injury in the last two weeks? Postpone to week 4 and keep everything easy. The TT can wait, a re-injury cannot.'],c:'This sets every pace target for the next 14 weeks. Run it honestly.'},
   sat:{t:'Easy Z2 run',s:'35min'},
-  sun:{t:'Base run + station skill',s:'60min Z2 + technique',b:['60min easy Z2','Introduce sled push at moderate load: 6 x 25m']}},
+  sun:{t:'Base run + station skill',s:'60min Z2 + technique',b:['60min easy Z2','Introduce the sled: push 6 x 25m, pull 4 x 25m, moderate load','Sled pull is the station people never practise. Start now.']}},
 
  {n:4,ph:'Rebuild',km:20,
-  wed:{t:'Easy Z2 + strides',s:'45min Z2, then 8 x 20s strides'},
+  wed:{t:'Z2 + fartlek pickups',s:'45min with 6 x 1min brisk',b:['Inside a 45min easy run: 6 x 1min at a brisk but controlled pace, 2min easy between.','Bridge week. Next Wednesday the intervals start for real.']},
   sat:{t:'Easy Z2 run',s:'35min'},
   sun:{t:'First station circuit',s:'65min total',b:['30min easy Z2 run','Then 3 rounds at easy effort: 500m Ski, 25 wall balls, 50m farmers carry','Focus on smooth transitions, no intensity'],c:'End of Phase 1. If you have had zero pain, you are ready to build.'}},
 
@@ -381,10 +464,10 @@ const SCHEDULE = [];
 W.forEach(w => {
   const days = [
     {ty:'off', t:'Rest day', s:'Full recovery', b:['Optional 20-30min walk or mobility.','Yesterday was your hardest session. This day is doing work.']},
-    {ty:'strength', t:'Upper Push', s:'Hypertrophy + SkiErg', ex: (w.n===17 || w.dl) ? PUSH.slice(0,4) : PUSH, c: w.dl ? 'Deload: 2-3 sets per exercise, nothing near failure. Skip the SkiErg intervals.' : w.n>=16 ? 'Taper: cut to 3 sets per exercise.' : 'Full intensity. This costs your legs nothing. Add load or reps every week you can.'},
+    {ty:'strength', t:'Upper Push', s: (w.dl?'Deload':BLOCK(w.n))+' · push + SkiErg', ex: push(w.n, w.dl), c: w.dl ? 'Deload: easy sets, nothing near failure.' : w.n<=4 ? 'Own the movements before you load them. Log every weight, that is your baseline.' : w.n<=9 ? 'Full intensity. This costs your legs nothing. Add load or reps every week you can.' : w.n<=14 ? 'Strength goes race-shaped: push press drives the sled, wall balls arrive when your shoulders are already tired.' : 'Fewer sets, same speed. Everything crisp, nothing ground out.'},
     Object.assign({ty:'run'}, w.wed),
-    {ty:'strength', t:'Lower', s: w.dl ? 'Deload strength' : 'Heavy strength', ex: lower(w.n, w.dl), c: w.dl ? 'Deload: lighter and shorter. The point is arriving at next week fresh.' : w.n<=4 ? 'Phase 1: RPE 7, leave two reps in the tank. Your legs are busy absorbing new run volume.' : 'Heavy and low volume. Built for sled force, not size.'},
-    {ty:'strength', t:'Upper Pull', s:'Hypertrophy + core', flex:true, ex: w.dl ? PULL.slice(0,4) : PULL, c: w.dl ? 'Deload: 2-3 easy sets. Or skip it entirely, this week is for absorbing.' : 'Flex day. If you skip it, add pull-ups and rows to next Tuesday.'},
+    {ty:'strength', t:'Lower', s: (w.dl?'Deload':BLOCK(w.n))+' · legs', ex: lower(w.n, w.dl), c: w.dl ? 'Deload: lighter and shorter. The point is arriving at next week fresh.' : w.n<=4 ? 'RPE 7, leave two reps in the tank. Your legs are busy absorbing new run volume.' : w.n<=9 ? 'Heavy and low volume. Built for sled force, not size.' : w.n<=14 ? 'Heavy triples keep strength without soreness. Lunges and sled move to race weight.' : 'Maintenance only. Bar speed over load.'},
+    {ty:'strength', t:'Upper Pull', s: (w.dl?'Deload':BLOCK(w.n))+' · pull + core', flex:true, ex: pull(w.n, w.dl), c: w.dl ? 'Deload: 2-3 easy sets. Or skip it entirely, this week is for absorbing.' : 'Flex day. If you skip it, add pull-ups and rows to next Tuesday.'},
     Object.assign({ty:'run'}, w.sat),
     Object.assign({ty:'hyrox', key:true}, w.sun)
   ];
