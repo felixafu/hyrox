@@ -263,7 +263,13 @@ const PULL = [
   ['Farmers carry','4 x 50m @ 2x24kg'],
   ['Hanging leg raise','3 x 12']
 ];
-const lower = (wk) => {
+const lower = (wk, dl) => {
+  if (dl) return [
+    ['Back squat','3 x 5 @ RPE 6'],
+    ['Bulgarian split squat','2 x 10 each leg'],
+    ['Romanian deadlift','2 x 8'],
+    ['Standing calf raise','2 x 15']
+  ];
   const sq = wk <= 4 ? '4 x 6 @ RPE 7' : '4 x 5 @ RPE 8';
   const rows = [
     ['Back squat', sq],
@@ -280,18 +286,18 @@ const lower = (wk) => {
    wed = quality run | sun = key session | sat = easy run | km = weekly volume
 ------------------------------------------- */
 const W = [
- {n:1,ph:'Rebuild',km:15,
+ {n:1,ph:'Rebuild',km:18,
   wed:{t:'Easy Z2 + strides',s:'35min Z2, then 6 x 20s strides',b:['Every step conversational. If you cannot talk, slow down.','Strides are relaxed and fast, not sprints. Full recovery between.'],c:'Week 1 exists to prove you can run again without pain. Nothing more.'},
   sat:{t:'Easy Z2 run',s:'30min',b:['Cap by heart rate, not pace. Walk hills if needed.']},
   sun:{t:'Base run + station skill',s:'50min Z2 + 30min technique',b:['50min easy Z2 run','Then unloaded technique: SkiErg, Row, Wall Ball','Film yourself on wall balls and sled push'],c:'Technique bought cheaply in August saves you minutes in December.'}},
 
- {n:2,ph:'Rebuild',km:18,
+ {n:2,ph:'Rebuild',km:20,
   wed:{t:'Easy Z2 + strides',s:'40min Z2, then 6 x 20s strides',b:['Same as last week, five minutes longer.']},
   sat:{t:'Easy Z2 run',s:'35min'},
   sun:{t:'Base run + station skill',s:'55min Z2 + 30min technique',b:['55min easy Z2','Row and Ski technique: focus on drive sequence, not pace','Practise wall ball depth and target consistency']}},
 
- {n:3,ph:'Rebuild',km:22,
-  wed:{t:'5K TIME TRIAL',s:'Hard, measured effort',b:['15min easy warm-up plus 4 x 20s strides','5km all-out on a flat route or track','10min easy cool-down'],c:'This sets every pace target for the next 14 weeks. Run it honestly.'},
+ {n:3,ph:'Rebuild',km:24,
+  wed:{t:'5K TIME TRIAL',s:'Hard, measured effort',b:['15min easy warm-up plus 4 x 20s strides','5km all-out on a flat route or track','10min easy cool-down','Any hint of the old injury in the last two weeks? Postpone to week 4 and keep everything easy. The TT can wait, a re-injury cannot.'],c:'This sets every pace target for the next 14 weeks. Run it honestly.'},
   sat:{t:'Easy Z2 run',s:'35min'},
   sun:{t:'Base run + station skill',s:'60min Z2 + technique',b:['60min easy Z2','Introduce sled push at moderate load: 6 x 25m']}},
 
@@ -300,67 +306,67 @@ const W = [
   sat:{t:'Easy Z2 run',s:'35min'},
   sun:{t:'First station circuit',s:'65min total',b:['30min easy Z2 run','Then 3 rounds at easy effort: 500m Ski, 25 wall balls, 50m farmers carry','Focus on smooth transitions, no intensity'],c:'End of Phase 1. If you have had zero pain, you are ready to build.'}},
 
- {n:5,ph:'Build',km:25,
+ {n:5,ph:'Build',km:21,
   wed:{t:'4 x 800m @ 5K pace',s:'90s jog recovery',b:['15min warm-up','4 x 800m at your 5K TT pace','90s easy jog between','10min cool-down'],c:'Your first real taste of the heart rate zone a Hyrox actually lives in.'},
   sat:{t:'Easy Z2 run',s:'40min'},
   sun:{t:'Compromised running',s:'4 rounds: 1km + station',b:['1km @ race pace → 500m SkiErg','1km @ race pace → 4 x 12.5m sled push','1km @ race pace → 500m Row','1km @ race pace → 50 wall balls'],c:'Doubles rep counts. Run straight into the station, no standing around.'}},
 
- {n:6,ph:'Build',km:28,
+ {n:6,ph:'Build',km:22,
   wed:{t:'5 x 800m @ 5K pace',s:'90s jog recovery'},
   sat:{t:'Easy Z2 run',s:'40min'},
   sun:{t:'Compromised running',s:'4 rounds: 1km + station',b:['1km → 4 x 12.5m sled pull','1km → 40m burpee broad jumps','1km → 100m farmers carry','1km → 50m sandbag lunges'],c:'The four stations most people neglect. Deliberately grouped.'}},
 
- {n:7,ph:'Build',km:32,
+ {n:7,ph:'Build',km:24,
   wed:{t:'4 x 1km @ threshold',s:'200m jog recovery',b:['Threshold is comfortably hard: you could speak a short sentence, not a paragraph.']},
   sat:{t:'Easy Z2 run',s:'45min'},
   sun:{t:'Compromised running',s:'5 rounds: 1km + station',b:['1km → 500m Ski','1km → 4 x 12.5m sled push','1km → 500m Row','1km → 100m farmers carry','1km → 50 wall balls']}},
 
- {n:8,ph:'Build',km:35,
+ {n:8,ph:'Build',km:26,
   wed:{t:'3 x 2km @ threshold',s:'400m jog recovery',c:'Biggest threshold session so far. Hold pace on the last rep.'},
   sat:{t:'Easy Z2 run',s:'45min'},
   sun:{t:'Compromised running',s:'5 rounds: 1km + station',b:['1km → 4 x 12.5m sled pull','1km → 40m burpee broad jumps','1km → 50m sandbag lunges','1km → 500m Ski','1km → 50 wall balls']}},
 
- {n:9,ph:'Build',km:25,dl:1,
+ {n:9,ph:'Build',km:18,dl:1,
   wed:{t:'3 x 1km @ threshold',s:'Deload. 200m jog recovery'},
   sat:{t:'Easy Z2 run',s:'30min'},
   sun:{t:'Deload + technique',s:'45min easy',b:['45min easy Z2','Light sled work, technique only','Review your wall ball and sled footage'],c:'Deload week. Absorb the last four weeks. Resist adding anything.'}},
 
- {n:10,ph:'Race-specific',km:32,
-  wed:{t:'6 x 1km @ race pace',s:'60s standing rest',b:['Race pace is 5:15-5:30/km. This should feel controlled, not desperate.']},
+ {n:10,ph:'Race-specific',km:25,
+  wed:{t:'6 x 1km @ race pace',s:'60s standing rest',b:['Race pace = your 5K TT pace + 45-60s/km. Ran the TT at 5:00/km? Target 5:45-6:00/km here.','Should feel controlled, not desperate. Hyrox runs happen on trashed legs, the pace accounts for that.']},
   sat:{t:'Easy Z2 run',s:'45min'},
-  sun:{t:'HALF SIMULATION',s:'Runs 1-4 + stations 1-4',b:['1km → 500m SkiErg','1km → 4 x 12.5m sled push','1km → 4 x 12.5m sled pull','1km → 40m burpee broad jumps'],c:'Race intensity, race transitions. Time it and write the splits down.'}},
+  sun:{t:'HALF SIMULATION',s:'Runs 1-4 + stations 1-4',b:['1km → 500m SkiErg','1km → 4 x 12.5m sled push','1km → 4 x 12.5m sled pull','1km → 40m burpee broad jumps'],c:'Race intensity, race transitions. From this week every station is at your division’s race weights. Time it and write the splits down.'}},
 
- {n:11,ph:'Race-specific',km:36,
+ {n:11,ph:'Race-specific',km:29,
   wed:{t:'3 x 2km @ threshold',s:'400m jog recovery'},
   sat:{t:'Easy Z2 run',s:'45min'},
   sun:{t:'Race pace + sled block',s:'8 x 1km off 90s, then sled',b:['8 x 1km at target race pace, 90s recovery','Then 10 x 12.5m heavy sled push','Then 10 x 12.5m heavy sled pull'],c:'The longest race-pace block of the plan. This is the fitness test.'}},
 
- {n:12,ph:'Race-specific',km:38,
+ {n:12,ph:'Race-specific',km:26,
   wed:{t:'6 x 1km @ race pace',s:'60s standing rest'},
   sat:{t:'Easy Z2 run',s:'50min'},
   sun:{t:'HALF SIMULATION',s:'Runs 5-8 + stations 5-8',b:['1km → 500m Row','1km → 100m farmers carry','1km → 50m sandbag lunges','1km → 50 wall balls'],c:'The back half is where races are lost. Practise it fatigued.'}},
 
- {n:13,ph:'Race-specific',km:28,dl:1,
+ {n:13,ph:'Race-specific',km:20,dl:1,
   wed:{t:'4 x 1km @ threshold',s:'Deload. 200m jog recovery'},
   sat:{t:'Easy Z2 run',s:'35min'},
   sun:{t:'Deload + partner drills',s:'45min easy',b:['45min easy Z2','Rehearse handovers and splits with your partner','No intensity, all choreography'],c:'Last deload before the big one. Bank the recovery.'}},
 
- {n:14,ph:'Race-specific',km:40,
+ {n:14,ph:'Race-specific',km:27,
   wed:{t:'5 x 1km @ race pace',s:'60s standing rest'},
   sat:{t:'Easy Z2 run',s:'40min'},
   sun:{t:'FULL DOUBLES SIM',s:'All 8 runs + 8 stations, with partner',b:['Full race, race intensity, with your partner','Run all 8km together, split every station','Record every split'],c:'Your first honest answer to what you will run in December. Pace it like the real thing.'}},
 
- {n:15,ph:'Sharpen',km:36,
+ {n:15,ph:'Sharpen',km:22,
   wed:{t:'6 x 1km @ race pace',s:'60s standing rest'},
   sat:{t:'Easy Z2 run',s:'40min'},
-  sun:{t:'FULL DOUBLES SIM #2',s:'Dress rehearsal',b:['Full race with partner at race intensity','Race kit, race shoes, race breakfast, race nutrition','Aim to beat week 14 splits, especially runs 6-8'],c:'Everything you will do on 2 Dec, rehearsed once. Nothing new on race day.'}},
+  sun:{t:'DRESS REHEARSAL',s:'6 of 8 rounds, full race logistics',b:['Rounds 1-6 with your partner at race intensity, then stop','Race kit, race shoes, race breakfast, race nutrition, race warm-up','Rehearse handovers and roxzone walking exactly as you will on the day'],c:'The fitness is already banked from week 14. Racing the full distance twice in 8 days just adds fatigue you would carry to 2 Dec. This one is logistics, not fitness.'}},
 
- {n:16,ph:'Sharpen',km:30,
+ {n:16,ph:'Sharpen',km:21,
   wed:{t:'5 x 1km @ race pace',s:'60s standing rest'},
   sat:{t:'Easy Z2 run',s:'35min'},
   sun:{t:'Half sim @ 85%',s:'4 runs + 4 stations, controlled',b:['4 rounds of 1km + station at 85% effort','Sharp but not draining'],c:'Volume down 20%, intensity held. Upper days drop to 3 sets per exercise.'}},
 
- {n:17,ph:'Taper',km:20,
+ {n:17,ph:'Taper',km:15,
   wed:{t:'3 x 1km @ race pace',s:'Short and sharp',b:['Feel fast, finish fresh. Stop wanting more.']},
   sat:{t:'Easy Z2 run',s:'25min'},
   sun:{t:'Shakeout',s:'25min + 3 light stations',b:['25min easy Z2','3 stations at half effort, purely to stay sharp'],c:'Three days out. Nothing today can add fitness. Plenty can subtract it.'}}
@@ -375,10 +381,10 @@ const SCHEDULE = [];
 W.forEach(w => {
   const days = [
     {ty:'off', t:'Rest day', s:'Full recovery', b:['Optional 20-30min walk or mobility.','Yesterday was your hardest session. This day is doing work.']},
-    {ty:'strength', t:'Upper Push', s:'Hypertrophy + SkiErg', ex: w.n===17 ? PUSH.slice(0,4) : PUSH, c: w.n>=16 ? 'Taper: cut to 3 sets per exercise.' : 'Full intensity. This costs your legs nothing. Add load or reps every week you can.'},
+    {ty:'strength', t:'Upper Push', s:'Hypertrophy + SkiErg', ex: (w.n===17 || w.dl) ? PUSH.slice(0,4) : PUSH, c: w.dl ? 'Deload: 2-3 sets per exercise, nothing near failure. Skip the SkiErg intervals.' : w.n>=16 ? 'Taper: cut to 3 sets per exercise.' : 'Full intensity. This costs your legs nothing. Add load or reps every week you can.'},
     Object.assign({ty:'run'}, w.wed),
-    {ty:'strength', t:'Lower', s:'Heavy strength', ex: lower(w.n), c: w.n<=4 ? 'Phase 1: RPE 7, leave two reps in the tank. Your legs are busy absorbing new run volume.' : 'Heavy and low volume. Built for sled force, not size.'},
-    {ty:'strength', t:'Upper Pull', s:'Hypertrophy + core', flex:true, ex:PULL, c:'Flex day. If you skip it, add pull-ups and rows to next Tuesday.'},
+    {ty:'strength', t:'Lower', s: w.dl ? 'Deload strength' : 'Heavy strength', ex: lower(w.n, w.dl), c: w.dl ? 'Deload: lighter and shorter. The point is arriving at next week fresh.' : w.n<=4 ? 'Phase 1: RPE 7, leave two reps in the tank. Your legs are busy absorbing new run volume.' : 'Heavy and low volume. Built for sled force, not size.'},
+    {ty:'strength', t:'Upper Pull', s:'Hypertrophy + core', flex:true, ex: w.dl ? PULL.slice(0,4) : PULL, c: w.dl ? 'Deload: 2-3 easy sets. Or skip it entirely, this week is for absorbing.' : 'Flex day. If you skip it, add pull-ups and rows to next Tuesday.'},
     Object.assign({ty:'run'}, w.sat),
     Object.assign({ty:'hyrox', key:true}, w.sun)
   ];
@@ -393,7 +399,7 @@ W.forEach(w => {
 const RW = [
   {ty:'run', t:'Shakeout + strides', s:'20min easy + 4 x 20s', b:['20min very easy','4 x 20s relaxed strides'], c:'Legs remember what fast feels like. That is all this is.'},
   {ty:'off', t:'Full rest', s:'Mobility, kit check, travel', b:['No training','Pack kit, pin number, shoes, nutrition','Early night'], c:'Nervous energy is normal. Do not burn it on a workout.'},
-  {ty:'race', t:'RACE DAY', s:'HYROX London · ExCeL', b:['Runs 1-2 at 5:30-5:45/km. Deliberately easy.','Runs 3-5 settle at 5:15-5:30/km.','Runs 6-8 hold or lift.','Budget 20-30s per roxzone. Walk with purpose.'], c:'If your first kilometre feels comfortable, you are pacing it correctly.'}
+  {ty:'race', t:'RACE DAY', s:'HYROX London · ExCeL', b:['Runs 1-2 deliberately 10-15s/km slower than your week 14 sim pace.','Runs 3-5 settle into sim pace.','Runs 6-8 hold or lift. This is where the sims pay off.','Budget 20-30s per roxzone. Walk with purpose.'], c:'If your first kilometre feels comfortable, you are pacing it correctly.'}
 ];
 RW.forEach((s,i) => SCHEDULE.push(Object.assign({date: addDays(START, 17*7 + i), wk:18, di:i, ph:'Race week', km:0, dl:false}, s)));
 
